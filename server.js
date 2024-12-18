@@ -21,6 +21,7 @@ async function main() {
     // logging with middleware
     const logRequest = (req, res, next) => {
         console.log(`Received a ${req.method} request from ${req.ip}`);
+        next();
     };
     app.use(logRequest);
 
@@ -32,7 +33,8 @@ async function main() {
         res.sendFile(path.join(__dirname, 'views', 'index.html'));
     });
 
-    app.post('/calculate', CalculateRouter)
+    // other routes
+    app.use('/calculate', CalculateRouter)
       
     app.all('*', (req, res) => {
         res.status(404).json({ message: 'Not Found' });
