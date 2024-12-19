@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.getElementById('submit');
+    const backButton = document.getElementById('back');
     const heightInput = document.getElementById('height');
     const weightInput = document.getElementById('weight');
     const resultElement = document.getElementById('result');
@@ -8,10 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalText = document.getElementById('modalText');
     const closeModalButton = document.querySelector('.close');
 
+    backButton.style.display = 'none';
+
     // close modal
     if (closeModalButton) {
         closeModalButton.addEventListener('click', () => {
             modal.style.display = 'none';
+        });
+    }
+
+    if (backButton) {
+        backButton.addEventListener('click', () => {
+            submitButton.style.display = 'block';
+            backButton.style.display = 'none';
+            resultElement.textContent = '0.00';
+            commentElement.style.display = 'none';
         });
     }
 
@@ -42,20 +54,31 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            
-        //     const responseData = await response.json();
+            const responseData = await response.json();
 
-        //     if (responseData) {
-        //         if (responseData.bmi) {
-        //             resultElement.textContent = responseData.bmi;
-        //         }
+            if (typeof responseData.bmi === 'string') {
+                showModal(`Error: ${responseData.bmi}`);
+                return;
+            }
+
+            if (responseData) {
+                submitButton.style.display = 'none';
+                backButton.style.display = 'block';
+
+                if (responseData.bmi) {
+                    resultElement.textContent = responseData.bmi;
+                    console.log(responseData.bmi)
+                } else {
+                    return;
+                }
                
-        //         if (responseData.category) {
-        //             commentElement.textContent = responseData.category || 'No category';
-        //         }
-        //     } else {
-        //         showModal('Error occured while calculating the BMI')
-        //     }
+                if (responseData.category && responseData.comment) {
+                    commentElement.style.display = 'block';
+                    commentElement.textContent = `${responseData.comment}`;
+                } else {
+                    return;
+                }
+            }
         } catch(error) {
             showModal(`Error: ${error.message}`);
         }
