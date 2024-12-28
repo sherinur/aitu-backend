@@ -1,0 +1,24 @@
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+body {
+    background-color: #191414;
+}
+.custom-navbar-brand {
+    @extend .navbar-brand;
+  
+    color: #ffffff;
+    font-size: 1.5rem;
+    &:hover {
+      color: rgb(221, 183, 183);
+    }
+}
+
+.search-input {
+    @extend .form-control;
+    width: 100%; 
+}
