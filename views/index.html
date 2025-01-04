@@ -13,14 +13,31 @@
     <nav class="navbar">
       <div class="container-fluid">
         <a class="custom-navbar-brand">Spotify Song Finder</a>
-        <form class="d-flex" role="search">
-          <input class="search-input me-2" type="search" placeholder="Artists, songs, or podcasts" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
+        <form class="d-flex" role="search" id="searchForm">
+          <input id="searchInput" class="search-input me-2" type="search" placeholder="Artists, songs, or podcasts" aria-label="Search">
+          <button class="btn btn-outline-success search-btn" type="submit">Search</button>
         </form>
       </div>
     </nav>
+    
 
   </div>
+
+  <main class="main">
+    <section class="results">
+      <div class="container">
+
+        <div class="row results-artists">
+          <h2>Artists</h2>
+        </div>
+
+        <div class="row results-tracks">
+          <h2>Tracks</h2>
+        </div>
+
+      </div>
+    </section>
+  </main>
   
 <script src="script.js"></script>
 

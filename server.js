@@ -1,12 +1,14 @@
-import express, { Router } from 'express';
-import { CalculateRouter } from './src/calculate/calculate.controller.js';
+import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
-import { errorHandler } from './src/calculate/error-handler.js';
+import 'dotenv/config';
+
+import { errorHandler } from './src/search/error-handler.js';
+import { SearchRouter } from './src/search/search.controller.js';
 
 const app = express();
-const PORT = 4200;
+const PORT = process.env.PORT || 4200;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,11 +16,10 @@ const __dirname = path.dirname(__filename);
 async function main() {
     app.use(express.json());
     app.use(express.static(path.join(__dirname, 'public')));
-
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
 
-    // logging with middleware
+    // logging middleware
     const logRequest = (req, res, next) => {
         console.log(`Received a ${req.method} request from ${req.ip}`);
         next();
@@ -34,7 +35,7 @@ async function main() {
     });
 
     // other routes
-    app.use('/calculate', CalculateRouter)
+    app.use('/search', SearchRouter)
       
     app.all('*', (req, res) => {
         res.status(404).json({ message: 'Not Found' });
