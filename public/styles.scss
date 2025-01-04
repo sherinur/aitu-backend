@@ -22,3 +22,18 @@ body {
     @extend .form-control;
     width: 100%; 
 }
+
+.card {
+    color: #ffffff;
+    background-color: #2B2626;
+    border-radius: 4%;
+}
+
+.results-title {
+    color: #ffffff;
+    font-size: 32px;
+}
+
+a {
+    color: #B2B2B2;
+}
