@@ -2,6 +2,15 @@
 
 This project is a Node.js backend application that uses Express.js to provide a simple API for searching artists and tracks using Spotify's Web API. The application also serves static files and includes error handling for a smooth user experience.
 
+## Stack
+- **Node.js**
+- **HTML**
+- **CSS**
+- **JavaScript**
+- **ExpressJS**
+- **SCSS**
+- **Bootstrap 5.3**
+
 ## Features
 
 - **Search API:** Endpoints for searching artists and tracks via Spotify Web API.
