@@ -1,50 +1,50 @@
-import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import bodyParser from 'body-parser';
-import 'dotenv/config';
-
-import { errorHandler } from './src/search/error-handler.js';
-import { SearchRouter } from './src/search/search.controller.js';
+const express = require("express");
+const bodyParser = require("body-parser");
+const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 4200;
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
+let items = []; // In-memory database
 
-async function main() {
-    app.use(express.json());
-    app.use(express.static(path.join(__dirname, 'public')));
-    app.use(bodyParser.urlencoded({ extended: false }));
-    app.use(bodyParser.json());
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
 
-    // logging middleware
-    const logRequest = (req, res, next) => {
-        console.log(`Received a ${req.method} request from ${req.ip}`);
-        next();
-    };
-    app.use(logRequest);
+// Routes
+app.get("/", (req, res) => {
+  res.render("index", { items });
+});
 
-    // error handler with middleware
-    app.use(errorHandler);
+app.get("/add", (req, res) => {
+  res.render("add");
+});
 
-    // root endpoint
-    app.get('/', (req, res) => {
-        res.sendFile(path.join(__dirname, 'views', 'index.html'));
-    });
+app.post("/add", (req, res) => {
+  const { name, description } = req.body;
+  const newItem = { id: Date.now(), name, description };
+  items.push(newItem);
+  res.redirect("/");
+});
 
-    // other routes
-    app.use('/search', SearchRouter)
-      
-    app.all('*', (req, res) => {
-        res.status(404).json({ message: 'Not Found' });
-    });
+app.get("/edit/:id", (req, res) => {
+  const item = items.find((i) => i.id == req.params.id);
+  res.render("edit", { item });
+});
 
-    app.listen(PORT, () => {
-        console.log('Server is running on port 4200');
-    });
-}
+app.post("/edit/:id", (req, res) => {
+  const { name, description } = req.body;
+  const item = items.find((i) => i.id == req.params.id);
+  item.name = name;
+  item.description = description;
+  res.redirect("/");
+});
 
-main()
+app.post("/delete/:id", (req, res) => {
+  items = items.filter((i) => i.id != req.params.id);
+  res.redirect("/");
+});
+
+const PORT = 3000;
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
